@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: fade('#ffffff', 0.25),
       },
       marginLeft: 0,
-      width: '50%',
     },
     searchIcon: {
       width: theme.spacing(7),
@@ -27,31 +26,36 @@ const useStyles = makeStyles(theme => ({
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 7),
-      transition: theme.transitions.create('width'),
       width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: 120,
-        '&:focus': {
-          width: 200,
-        },
-      },
     },
   }));
 
-const Search = () => {
+const ENTER = 13
+
+const Search = ({ onSearch }) => {
     const classes = useStyles()
+    const [searchTerm, setSearchTerm] = React.useState('')
+
+    const handleOnChange = event => setSearchTerm(event.target.value)
+
+    const handleOnKeyDown = event => {
+      event.keyCode === ENTER && onSearch(searchTerm)
+    }
+
     return (
         <div className={classes.search}>
             <div className={classes.searchIcon}>
                 <SearchIcon />
             </div>
             <InputBase
-                placeholder="Search…"
+                placeholder="Search GitHub"
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
                 }}
-                inputProps={{ 'aria-label': 'search' }}
+                value={searchTerm}
+                onChange={handleOnChange}
+                onKeyDown={handleOnKeyDown}
             />
         </div>
     )

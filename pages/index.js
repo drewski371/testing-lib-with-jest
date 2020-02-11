@@ -21,22 +21,23 @@ const Page = () => {
     const classes = useStyles()
     const [repo, setRepo] = React.useState({})
     const [detailsOpen, setDetailsOpen] = React.useState(false)
-
-    React.useEffect(() => {
-        axios
-            .get('https://api.github.com/repos/testing-library/react-testing-library')
-            .then(({ data }) => {
-                console.log(data)
-                setRepo(data)
-            })
-    }, [])
+    const [loading, setLoading] = React.useState(false)
 
     const showDetails = () => setDetailsOpen(true)
 
+    const onSearch = async searchTerm => {
+        if (!searchTerm) return
+        setLoading(true)
+        const { data } = await axios.get(`https://api.github.com/search/repositories?q=${searchTerm}`)
+        setRepo(data.items[0])
+        setLoading(false)
+    }
+
     return (
         <>
-            <AppBar />
+            <AppBar onSearch={onSearch} />
             <div className={classes.content}>
+                {loading && <Typography>loading...</Typography>}
                 {repo.name &&
                     <>
                         <Typography variant="h5">{repo.name}</Typography>
@@ -53,9 +54,3 @@ const Page = () => {
 }
 
 export default Page
-
-// mocks when fetching data
-// integration vs unit
-// false positive
-// false negative
-// snapshot tests
