@@ -5,8 +5,19 @@ import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import StarRateIcon from '@material-ui/icons/StarRate'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+    stars: {
+        display: 'inline-flex',
+    },
+    starIcon: {
+        height: '24px',
+    },
+})
 
 const DetailsDialog = ({ open, setOpen, repo }) => {
+    const classes = useStyles()
     const handleClose = () => setOpen(false)
     const { html_url, stargazers_count, forks, language } = repo
     
@@ -17,12 +28,18 @@ const DetailsDialog = ({ open, setOpen, repo }) => {
         >
             <DialogTitle>Repo Details</DialogTitle>
             <DialogContent>
-                <Typography>Url: <a href={html_url}>{html_url}</a></Typography>
-                <Typography style={{ display: 'inline-flex' }}>
-                    Stars: <span style={{ height: '24px' }}><StarRateIcon /></span> {stargazers_count}
+                <Typography>
+                    Url: <a href={html_url}>{html_url}</a>
                 </Typography>
-                <Typography>Forks: {forks}</Typography>
-                <Typography>Language: {language}</Typography>
+                <Typography className={classes.stars}>
+                    Stars: <span className={classes.starIcon}><StarRateIcon /></span> {stargazers_count}
+                </Typography>
+                <Typography>
+                    Forks: {forks}
+                </Typography>
+                <Typography>
+                    Language: {language}
+                </Typography>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Close</Button>

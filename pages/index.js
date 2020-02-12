@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     },
 })
 
-const Page = () => {
+const GitHubSearch = () => {
     const classes = useStyles()
     const [repo, setRepo] = React.useState({})
     const [detailsOpen, setDetailsOpen] = React.useState(false)
@@ -53,4 +53,4 @@ const Page = () => {
     )
 }
 
-export default Page
+export default GitHubSearch
