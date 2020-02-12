@@ -5,6 +5,15 @@ import axios from 'axios'
 
 jest.mock('axios')
 
+test('<GitHubSearch /> does not fetch when search term is empty', () => {
+    const { debug, getByPlaceholderText, queryByText } = render(<GitHubSearch />)
+    const searchInput = getByPlaceholderText('Search GitHub')
+    fireEvent.keyDown(searchInput, { key: 'Enter', keyCode: 13 })
+
+    expect(queryByText('loading...')).toBeFalsy()
+    expect(axios.get).not.toHaveBeenCalled()
+})
+
 test('<GitHubSearch /> fetches repositories and displays first hit', async () => {
     const name = 'test repo'
     const description = 'test description'
@@ -23,16 +32,6 @@ test('<GitHubSearch /> fetches repositories and displays first hit', async () =>
     expect(queryByText(description)).toBeTruthy()
     expect(queryByText('loading...')).toBeFalsy()
     expect(axios.get).toHaveBeenCalledWith(endpoint)
-})
-
-test('<GitHubSearch /> does not fetch when search term is empty', () => {
-    axios.get.mockClear()
-    const { debug, getByPlaceholderText, queryByText } = render(<GitHubSearch />)
-    const searchInput = getByPlaceholderText('Search GitHub')
-    fireEvent.keyDown(searchInput, { key: 'Enter', keyCode: 13 })
-
-    expect(queryByText('loading...')).toBeFalsy()
-    expect(axios.get).not.toHaveBeenCalled()
 })
 
 test('<DetailsDialog /> opens when see details is clicked', async () => {
